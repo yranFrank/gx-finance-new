@@ -50,7 +50,7 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
 
   useEffect(() => {
     // 1. Counter Animation (Non-linear for realism)
-    const duration = 2200; 
+    const duration = 4200; 
     const startTime = Date.now();
 
     const animateCounter = () => {
@@ -77,20 +77,19 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
     };
   }, [onComplete]);
 
+  const clampedCount = Math.min(Math.max(count, 0), 100);
+  const totalPoints = ratePoints.length;
+  const pointProgress = clampedCount / 100;
+  const lineProgress = pointProgress;
+
   return (
     <div 
-      className={`fixed inset-0 z-[100] flex flex-col justify-between bg-glc-red text-white overflow-hidden transition-all duration-[1000ms] ease-[cubic-bezier(0.87,0,0.13,1)] ${
+      className={`fixed inset-0 z-[100] flex flex-col justify-between bg-white text-glc-slate overflow-hidden transition-all duration-[1000ms] ease-[cubic-bezier(0.87,0,0.13,1)] ${
         isExiting ? '-translate-y-full rounded-b-[100px] shadow-2xl' : 'translate-y-0 rounded-b-none'
       }`}
     >
       <style>
         {`
-          @keyframes lineDraw {
-            to {
-              stroke-dashoffset: 0;
-            }
-          }
-
           @keyframes pointPop {
             0% {
               opacity: 0;
@@ -101,13 +100,28 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
               transform: scale(1);
             }
           }
+
+          @keyframes cameraZoom {
+            0% {
+              transform: scale(0.94);
+              opacity: 0.6;
+            }
+            45% {
+              transform: scale(1.01);
+              opacity: 1;
+            }
+            100% {
+              transform: scale(1.03);
+              opacity: 1;
+            }
+          }
         `}
       </style>
 
-      {/* Dynamic Background Grid (White lines on Red background) */}
-      <div className="absolute inset-0 opacity-[0.08] pointer-events-none z-0" 
+      {/* Dynamic Background Grid (Light lines on White background) */}
+      <div className="absolute inset-0 opacity-[0.18] pointer-events-none z-0" 
            style={{ 
-             backgroundImage: 'linear-gradient(#FFFFFF 1px, transparent 1px), linear-gradient(90deg, #FFFFFF 1px, transparent 1px)', 
+             backgroundImage: 'linear-gradient(#E7E2DA 1px, transparent 1px), linear-gradient(90deg, #E7E2DA 1px, transparent 1px)', 
              backgroundSize: '80px 80px' 
            }}>
       </div>
@@ -115,14 +129,14 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       {/* Top Section */}
       <div className="flex flex-wrap justify-between items-start gap-4 p-8 md:p-12 z-10">
         <div className="flex items-center gap-3">
-          <div className="w-2 h-2 bg-white rounded-full animate-ping"></div>
-          <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/90">
-            数据自动搜索中
+          <div className="w-2 h-2 bg-glc-red rounded-full animate-ping"></div>
+          <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-glc-slate/80">
+            Auto Data Scanning
           </span>
         </div>
         <div className="flex items-center gap-3 text-[10px] font-bold tracking-[0.2em] uppercase">
-          <span className="text-white/70">近十年趋势</span>
-          <span className="text-glc-gold bg-white/10 px-3 py-1 rounded-full border border-white/10">
+          <span className="text-glc-slate/70">10-Year Trend</span>
+          <span className="text-glc-gold bg-glc-slate/5 px-3 py-1 rounded-full border border-glc-slate/10">
             2015-2024
           </span>
         </div>
@@ -134,56 +148,69 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           className={`transition-all duration-500 transform ${
             isExiting ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'
           }`}
+          style={{ animation: 'cameraZoom 4.2s cubic-bezier(0.22,1,0.36,1) forwards' }}
         >
           <div className="flex flex-wrap items-center justify-between gap-6">
             <div>
-              <p className="text-[10px] font-semibold tracking-[0.3em] text-white/60 uppercase">
-                动态数据载入
+              <p className="text-2xl md:text-4xl font-black tracking-[0.2em] text-glc-red uppercase">
+                GX Finance
               </p>
-              <h1 className="text-3xl md:text-5xl font-black italic tracking-tight text-white">
-                贷款利率 &amp; 房价浮动
+              <p className="text-[10px] font-semibold tracking-[0.3em] text-glc-slate/60 uppercase">
+                Dynamic Data Loading
+              </p>
+              <h1 className="text-3xl md:text-5xl font-black italic tracking-tight text-glc-slate">
+                Loan Rates &amp; Home Price Moves
               </h1>
-              <p className="mt-3 text-sm text-white/70 max-w-xl">
-                模拟过去 10 年利率与房价走势，实时绘制双轨迹曲线，等待加载完成即可进入页面。
+              <p className="mt-3 text-sm text-glc-slate/70 max-w-xl">
+                Simulating the last 10 years of rate and price movements, rendering dual trajectories in real time before entry.
               </p>
             </div>
-            <div className="flex flex-col gap-3 text-xs font-semibold text-white/70">
+            <div className="flex flex-col gap-3 text-xs font-semibold text-glc-slate/70">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.6)]"></span>
-                贷款利率（%）
+                <span className="w-3 h-3 rounded-full bg-glc-red shadow-[0_0_10px_rgba(215,35,41,0.35)]"></span>
+                Loan Rate (%)
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-glc-gold shadow-[0_0_10px_rgba(204,164,59,0.6)]"></span>
-                房价指数
+                Home Price Index
               </div>
             </div>
           </div>
 
-          <div className="mt-8 rounded-3xl border border-white/10 bg-white/10 p-6 shadow-[0_30px_60px_rgba(0,0,0,0.25)]">
+          <div
+            className="mt-8 rounded-3xl border border-glc-slate/10 bg-white p-6 shadow-[0_30px_60px_rgba(15,23,42,0.12)]"
+            style={{ animation: 'cameraZoom 4.2s cubic-bezier(0.22,1,0.36,1) forwards', transformOrigin: 'center' }}
+          >
             <svg
               viewBox={`0 0 ${chartWidth} ${chartHeight}`}
               className="w-full h-[220px] md:h-[260px]"
               role="img"
-              aria-label="近十年贷款利率与房价指数变化图"
+              aria-label="Loan rates and home price index over the last decade"
             >
               <defs>
                 <linearGradient id="priceGlow" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="#CCA43B" stopOpacity="0.2" />
                   <stop offset="100%" stopColor="#CCA43B" stopOpacity="0.6" />
                 </linearGradient>
+                <linearGradient id="rateGlow" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#D72329" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#D72329" stopOpacity="0.9" />
+                </linearGradient>
               </defs>
               <path
                 d={toPath(ratePoints)}
                 fill="none"
-                stroke="white"
+                stroke="url(#rateGlow)"
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 style={{
-                  strokeDasharray: 1000,
-                  strokeDashoffset: 1000,
-                  animation: 'lineDraw 2.2s ease forwards',
+                  strokeDasharray: `${lineProgress} 1`,
+                  strokeDashoffset: 0,
+                  transition: 'stroke-dashoffset 120ms linear',
+                  filter: 'drop-shadow(0 0 8px rgba(215,35,41,0.35))',
                 }}
+                pathLength={1}
               />
               <path
                 d={toPath(pricePoints)}
@@ -193,10 +220,12 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 style={{
-                  strokeDasharray: 1000,
-                  strokeDashoffset: 1000,
-                  animation: 'lineDraw 2.6s ease forwards',
+                  strokeDasharray: `${lineProgress} 1`,
+                  strokeDashoffset: 0,
+                  transition: 'stroke-dashoffset 120ms linear',
+                  filter: 'drop-shadow(0 0 10px rgba(204,164,59,0.35))',
                 }}
+                pathLength={1}
               />
               {ratePoints.map((point, index) => (
                 <circle
@@ -204,12 +233,12 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                   cx={point.x}
                   cy={point.y}
                   r="4"
-                  fill="#FFFFFF"
+                  fill="#D72329"
                   style={{
                     transformOrigin: `${point.x}px ${point.y}px`,
-                    animation: 'pointPop 0.6s ease forwards',
-                    animationDelay: `${0.2 + index * 0.08}s`,
-                    opacity: 0,
+                    transition: 'opacity 140ms linear, transform 160ms ease',
+                    opacity: Math.min(Math.max((pointProgress - index / (totalPoints - 1)) / 0.12, 0), 1),
+                    transform: `scale(${0.6 + Math.min(Math.max((pointProgress - index / (totalPoints - 1)) / 0.12, 0), 1) * 0.4})`,
                   }}
                 />
               ))}
@@ -222,9 +251,9 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                   fill="#CCA43B"
                   style={{
                     transformOrigin: `${point.x}px ${point.y}px`,
-                    animation: 'pointPop 0.6s ease forwards',
-                    animationDelay: `${0.3 + index * 0.08}s`,
-                    opacity: 0,
+                    transition: 'opacity 140ms linear, transform 160ms ease',
+                    opacity: Math.min(Math.max((pointProgress - index / (totalPoints - 1)) / 0.12, 0), 1),
+                    transform: `scale(${0.6 + Math.min(Math.max((pointProgress - index / (totalPoints - 1)) / 0.12, 0), 1) * 0.4})`,
                   }}
                 />
               ))}
@@ -234,19 +263,19 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                   x={ratePoints[index].x}
                   y={chartHeight - 4}
                   textAnchor="middle"
-                  fill="rgba(255,255,255,0.6)"
+                  fill="rgba(15,23,42,0.6)"
                   fontSize="10"
                 >
                   {year}
                 </text>
               ))}
             </svg>
-            <div className="mt-4 flex flex-wrap justify-between gap-3 text-xs text-white/70">
+            <div className="mt-4 flex flex-wrap justify-between gap-3 text-xs text-glc-slate/70">
               <div>
-                利率区间：{rateMin.toFixed(2)}% - {rateMax.toFixed(2)}%
+                Rate range: {rateMin.toFixed(2)}% - {rateMax.toFixed(2)}%
               </div>
               <div>
-                房价指数区间：{priceMin} - {priceMax}
+                Price index range: {priceMin} - {priceMax}
               </div>
             </div>
           </div>
@@ -257,24 +286,24 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       <div className="p-8 md:p-12 z-10 w-full flex items-end justify-between relative">
         
         {/* Decorative Lines */}
-        <div className="w-full absolute bottom-12 left-0 h-[1px] bg-white/20"></div>
+        <div className="w-full absolute bottom-12 left-0 h-[1px] bg-glc-slate/15"></div>
         <div 
-          className="absolute bottom-12 left-0 h-[2px] bg-glc-gold transition-all duration-100 ease-linear shadow-[0_0_15px_#CCA43B]"
-          style={{ width: `${count}%` }}
+          className="absolute bottom-12 left-0 h-[2px] bg-glc-red transition-all duration-100 ease-linear shadow-[0_0_15px_rgba(215,35,41,0.45)]"
+          style={{ width: `${clampedCount}%` }}
         ></div>
 
-        <div className="text-xs font-mono text-white/70 hidden md:block">
+        <div className="text-xs font-mono text-glc-slate/70 hidden md:block">
           DATA STREAM LOCKED<br />
           UPDATE MODE: REAL-TIME
         </div>
 
         <div className="flex items-baseline">
-          <div className="text-[5rem] md:text-[10rem] leading-[0.8] font-black font-sans tracking-tighter text-white select-none relative drop-shadow-xl">
-            {Math.floor(count)}
+          <div className="text-[5rem] md:text-[10rem] leading-[0.8] font-black font-sans tracking-tighter text-glc-slate select-none relative drop-shadow-xl">
+            {Math.floor(clampedCount)}
             {/* Subtle glow behind the number */}
-            <div className="absolute inset-0 blur-3xl bg-white/20 -z-10"></div>
+            <div className="absolute inset-0 blur-3xl bg-glc-red/10 -z-10"></div>
           </div>
-          <span className="text-2xl md:text-4xl font-bold text-glc-gold mb-4 md:mb-8 ml-2">
+          <span className="text-2xl md:text-4xl font-bold text-glc-red mb-4 md:mb-8 ml-2">
             %
           </span>
         </div>
