@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GX Finance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            },
+            colors: {
+              glc: {
+                slate: '#0F172A',  // Main Text (Dark Slate)
+                gold: '#CCA43B',   // Premium Gold
+                red: '#C8102E',    // GX Brand Red
+                gray: '#64748B',   // Secondary Text
+                bg: '#FFFFFF',     // Main Background
+                offwhite: '#F8FAFC' // Secondary Background
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 1s ease-out forwards',
+              'slide-up': 'slideUp 0.8s ease-out forwards',
+              'scroll': 'scroll 40s linear infinite', 
+              'draw': 'draw 2s ease-out forwards',
+              'grow-up': 'growUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'expand-width': 'expandWidth 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              scroll: {
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-100%)' }, 
+              },
+              draw: {
+                'to': { strokeDashoffset: '0' }
+              },
+              growUp: {
+                '0%': { transform: 'scaleY(0)' },
+                '100%': { transform: 'scaleY(1)' }
+              },
+              expandWidth: {
+                '0%': { width: '0%' },
+                '100%': { width: '100%' }
+              },
+              float: {
+                '0%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-10px)' },
+                '100%': { transform: 'translateY(0px)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #FFFFFF;
+        color: #0F172A;
+        overflow-x: hidden;
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #F1F1F1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #C8102E; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #CCA43B; 
+      }
+      
+      ::selection {
+        background-color: #F3E5AB;
+        color: #C8102E;
+      }
+
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+      
+      /* Pauses animation on both tracks when the parent group is hovered */
+      .group:hover .animate-scroll {
+        animation-play-state: paused;
+      }
+
+      /* Utilities for Line Animations */
+      .origin-bottom { transform-origin: bottom; }
+      .origin-left { transform-origin: left; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@0.344.0",
+    "react/": "https://esm.sh/react@18.2.0/",
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?external=react,react-dom"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
