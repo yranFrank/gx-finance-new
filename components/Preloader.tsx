@@ -33,40 +33,47 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         {`
           .gx-loader {
             font-family: "Suisse Intl", "Inter", system-ui, sans-serif;
-            font-size: clamp(48px, 10vw, 120px);
-            font-weight: 700;
-            letter-spacing: 0.08em;
+            font-size: clamp(72px, 14vw, 190px);
+            font-weight: 800;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
             color: #ffffff;
+            gap: clamp(12px, 2vw, 28px);
+            text-shadow:
+              0 0 16px rgba(255, 255, 255, 0.12),
+              0 0 48px rgba(120, 170, 255, 0.22);
           }
           .gx-word {
             display: inline-block;
             white-space: nowrap;
           }
           .gx-initial {
-            animation: gx-shift 1.1s ease 0.9s forwards;
+            animation: gx-slide-left 0.95s ease 0.35s forwards;
           }
           .gx-finance {
             opacity: 0;
-            transform: translateX(-12px);
-            animation: gx-reveal 0.8s ease 1.4s forwards;
-            font-weight: 500;
-            font-size: clamp(32px, 6.5vw, 88px);
+            transform: translateX(-0.8em);
+            animation: gx-reveal 0.85s ease 1s forwards;
+            font-weight: 600;
+            font-size: clamp(46px, 7.6vw, 118px);
             text-transform: lowercase;
-            margin-left: 16px;
+            background: linear-gradient(120deg, #ffffff 0%, #b8d4ff 45%, #6aa8ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
           }
-          @keyframes gx-shift {
+          @keyframes gx-slide-left {
             from {
               transform: translateX(0);
             }
             to {
-              transform: translateX(80px);
+              transform: translateX(-0.95em);
             }
           }
           @keyframes gx-reveal {
             from {
               opacity: 0;
-              transform: translateX(-12px);
+              transform: translateX(-0.8em);
             }
             to {
               opacity: 1;

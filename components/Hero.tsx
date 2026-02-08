@@ -1,163 +1,191 @@
-import React from 'react';
-import { ArrowRight, Star } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { ArrowRight, TrendingUp, CheckCircle2, Activity, PieChart, ShieldCheck } from 'lucide-react';
 import FadeIn from './FadeIn';
-import CountUp from './CountUp';
 import { Link } from 'react-router-dom';
 
 const Hero: React.FC = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Handle Parallax Logic
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    
+    const { left, top, width, height } = containerRef.current.getBoundingClientRect();
+    const x = (e.clientX - left) / width;
+    const y = (e.clientY - top) / height;
+    
+    setMousePosition({ x, y });
+  };
+
   return (
-    <section className="relative bg-white min-h-screen flex items-center pt-24 overflow-hidden">
-      {/* Clean Grid Background */}
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
-           style={{ 
-             backgroundImage: 'linear-gradient(#0F172A 1px, transparent 1px), linear-gradient(90deg, #0F172A 1px, transparent 1px)', 
-             backgroundSize: '60px 60px' 
-           }}>
+    <section 
+      className="relative bg-white min-h-screen flex items-center justify-center overflow-hidden py-20"
+      onMouseMove={handleMouseMove}
+      ref={containerRef}
+    >
+      {/* --- Dynamic Background (Red & Gold Theme) --- */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Architectural Grid */}
+        <div 
+          className="absolute inset-0 opacity-[0.03]"
+          style={{ 
+            backgroundImage: `linear-gradient(#C8102E 1px, transparent 1px), linear-gradient(90deg, #C8102E 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+          }}
+        ></div>
+
+        {/* Ambient Moving Orbs */}
+        <div 
+            className="absolute top-0 right-0 w-[800px] h-[800px] bg-glc-red/5 rounded-full blur-3xl transition-transform duration-100 ease-out animate-pulse-slow"
+            style={{ transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * 20}px)` }}
+        ></div>
+        <div 
+            className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-glc-gold/10 rounded-full blur-3xl transition-transform duration-100 ease-out animate-pulse-slow"
+            style={{ transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * -20}px)` }}
+        ></div>
       </div>
-      
-      {/* Subtle Red/Gold Glows for Ambience - kept very minimal */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-glc-red/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
 
-      <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
-        
-        {/* Left Content - Clean Typography */}
-        <div className="order-2 lg:order-1 flex flex-col justify-center">
-          <FadeIn delay={100} direction="left">
-            <div className="inline-block border-b border-glc-gold pb-2 mb-8">
-               <span className="text-glc-slate text-xs font-bold uppercase tracking-[0.2em]">Premium Finance Solutions</span>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={200} direction="up">
-            <h1 className="text-6xl lg:text-7xl font-extrabold text-glc-slate leading-[1.05] mb-8 tracking-tight">
-              Precision in <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-glc-red to-red-600 relative">
-                Lending
-                {/* Decorative Line under text */}
-                <svg className="absolute w-full h-3 bottom-1 left-0 text-glc-gold -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
-                   <line x1="0" y1="5" x2="100" y2="5" stroke="currentColor" strokeWidth="2" strokeDasharray="100" strokeDashoffset="100" className="animate-[draw_1s_ease-out_1s_forwards]" />
-                </svg>
-              </span>
-            </h1>
-          </FadeIn>
+      {/* --- Main Content --- */}
+      <div className="relative z-10 max-w-[1400px] w-full mx-auto px-6">
+        <FadeIn delay={100} className="w-full">
           
-          <FadeIn delay={300}>
-            <p className="text-glc-gray text-lg leading-relaxed max-w-lg mb-10 border-l-2 border-glc-slate/20 pl-6">
-               Simplifying the complex. We engineer tailored financial strategies for home loans, commercial expansion, and wealth creation.
-            </p>
-          </FadeIn>
-
-          <FadeIn delay={400}>
-            <div className="flex flex-col sm:flex-row gap-5">
-              <Link to="/contact" className="group inline-flex items-center justify-center gap-3 bg-glc-slate text-white px-8 py-4 font-bold uppercase tracking-wider hover:bg-glc-red transition-colors duration-300 rounded-sm shadow-lg shadow-gray-200 hover:shadow-red-100">
-                <span>Start Application</span>
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left Content - Typography Focused */}
+            <div className="space-y-12 relative z-20">
               
-              <Link to="/services" className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold uppercase tracking-wider text-glc-slate hover:text-glc-gold transition-colors border border-transparent hover:border-gray-200 rounded-sm">
-                View Services
-              </Link>
-            </div>
-          </FadeIn>
+              {/* Badge */}
+              <div className="inline-flex items-center gap-3 px-6 py-2 bg-glc-red/5 rounded-full border border-glc-red/10">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-glc-red opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-glc-red"></span>
+                </span>
+                <span className="text-xs font-black uppercase tracking-[0.25em] text-glc-red">Architectural Finance</span>
+              </div>
 
-          <FadeIn delay={500}>
-             <div className="mt-16 flex items-center gap-6">
-                <div className="flex -space-x-3">
-                  {[1,2,3].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-gray-100 overflow-hidden shadow-sm">
-                       <img src={`https://picsum.photos/100?random=${i+10}`} className="w-full h-full object-cover grayscale" alt="client" />
-                    </div>
-                  ))}
-                  <div className="w-10 h-10 rounded-full border-2 border-white bg-glc-slate text-white flex items-center justify-center text-xs font-bold shadow-sm">
-                    500+
-                  </div>
-                </div>
-                <div className="h-8 w-px bg-gray-200"></div>
+              {/* Heading */}
+              <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter group cursor-default">
+                <span className="block text-glc-red transition-transform duration-500 hover:translate-x-2">
+                  Capital
+                </span>
+                <span className="block font-serif italic font-normal text-glc-gold opacity-90 transition-transform duration-500 hover:translate-x-6 hover:opacity-100">
+                  Structures
+                </span>
+                <span className="block text-glc-slate transition-transform duration-500 hover:translate-x-2">
+                  Reimagined.
+                </span>
+              </h1>
+
+              <p className="text-xl text-gray-500 font-medium max-w-lg leading-relaxed border-l-4 border-glc-gold pl-6">
+                We design complex lending frameworks for residential and commercial expansion. Bespoke finance for the ambitious.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-6">
+                <Link 
+                  to="/contact" 
+                  className="px-10 py-5 bg-glc-red text-white text-xs font-black uppercase tracking-[0.2em] shadow-xl hover:bg-glc-slate transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-4 group"
+                >
+                  Start Project <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+                
+                <Link 
+                  to="/services" 
+                  className="px-10 py-5 bg-white border-2 border-glc-slate/5 text-glc-slate text-xs font-black uppercase tracking-[0.2em] hover:border-glc-gold hover:text-glc-gold transition-all duration-300"
+                >
+                  View Services
+                </Link>
+              </div>
+
+              {/* Stats */}
+              <div className="pt-12 grid grid-cols-3 gap-8">
                 <div>
-                   <div className="flex text-glc-gold gap-0.5">
-                     {[1,2,3,4,5].map(i => <Star key={i} size={12} className="fill-current" />)}
-                   </div>
-                   <p className="text-xs font-bold uppercase tracking-wide text-glc-slate mt-1">Trusted Excellence</p>
+                    <p className="text-3xl font-black text-glc-red">$2.4B+</p>
+                    <p className="text-[10px] font-bold text-glc-gold uppercase tracking-widest mt-1">Settled</p>
                 </div>
-             </div>
-          </FadeIn>
-        </div>
+                <div>
+                    <p className="text-3xl font-black text-glc-red">10+</p>
+                    <p className="text-[10px] font-bold text-glc-gold uppercase tracking-widest mt-1">Years Exp</p>
+                </div>
+                <div>
+                    <p className="text-3xl font-black text-glc-red">500+</p>
+                    <p className="text-[10px] font-bold text-glc-gold uppercase tracking-widest mt-1">Clients</p>
+                </div>
+              </div>
+            </div>
 
-        {/* Right Content - Abstract Linear Graphics */}
-        <div className="relative h-[600px] flex items-center justify-center order-1 lg:order-2">
-           <div className="w-full h-full relative">
-              <svg viewBox="0 0 800 600" className="w-full h-full drop-shadow-2xl">
-                 <defs>
-                    <linearGradient id="grad1" x1="0%" y1="100%" x2="0%" y2="0%">
-                      <stop offset="0%" stopColor="#0F172A" stopOpacity="0.1" />
-                      <stop offset="100%" stopColor="#0F172A" stopOpacity="0.8" />
-                    </linearGradient>
-                    <linearGradient id="goldGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#CCA43B" />
-                      <stop offset="100%" stopColor="#F3E5AB" />
-                    </linearGradient>
-                 </defs>
+            {/* Right Content - "Orbiting Financial Solar System" (No Blocks) */}
+            <div className="hidden lg:flex items-center justify-center relative h-[600px] w-full perspective-1200">
+              
+              {/* Central Hub: The Core Value */}
+              <div className="relative z-20 w-48 h-48 rounded-full bg-white border border-gray-100 shadow-[0_0_60px_rgba(200,16,46,0.15)] flex flex-col items-center justify-center animate-float">
+                 <div className="absolute inset-0 rounded-full border-4 border-glc-gold/10 animate-pulse-slow"></div>
+                 <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Exclusive</p>
+                 <div className="text-5xl font-black text-glc-red tracking-tight">5.89<span className="text-2xl">%</span></div>
+                 <p className="text-[10px] font-black uppercase tracking-widest text-glc-slate mt-1">GX Rate</p>
+              </div>
 
-                 {/* Abstract City/Data Pillars - Staggered Growth Animation */}
-                 <rect x="150" y="550" width="60" height="0" fill="url(#grad1)" className="animate-grow-up origin-bottom" style={{animationDuration: '1.2s'}} rx="2" />
-                 <rect x="230" y="550" width="60" height="0" fill="url(#grad1)" className="animate-grow-up origin-bottom" style={{animationDuration: '1.8s', animationDelay: '0.2s'}} rx="2" />
-                 <rect x="310" y="550" width="60" height="0" fill="url(#grad1)" className="animate-grow-up origin-bottom" style={{animationDuration: '1.5s', animationDelay: '0.1s'}} rx="2" />
-                 <rect x="390" y="550" width="60" height="0" fill="url(#grad1)" className="animate-grow-up origin-bottom" style={{animationDuration: '2.2s', animationDelay: '0.3s'}} rx="2" />
-                 <rect x="470" y="550" width="60" height="0" fill="url(#grad1)" className="animate-grow-up origin-bottom" style={{animationDuration: '1.6s', animationDelay: '0.1s'}} rx="2" />
-                 <rect x="550" y="550" width="60" height="0" fill="url(#grad1)" className="animate-grow-up origin-bottom" style={{animationDuration: '2.0s', animationDelay: '0.4s'}} rx="2" />
-
-                 {/* Connecting Grid Lines - Horizontal */}
-                 <line x1="100" y1="450" x2="700" y2="450" stroke="#E2E8F0" strokeWidth="1" strokeDasharray="600" strokeDashoffset="600" className="animate-draw" style={{animationDelay: '1s'}} />
-                 <line x1="100" y1="300" x2="700" y2="300" stroke="#E2E8F0" strokeWidth="1" strokeDasharray="600" strokeDashoffset="600" className="animate-draw" style={{animationDelay: '1.2s'}} />
-                 <line x1="100" y1="150" x2="700" y2="150" stroke="#E2E8F0" strokeWidth="1" strokeDasharray="600" strokeDashoffset="600" className="animate-draw" style={{animationDelay: '1.4s'}} />
-
-                 {/* The Golden Trajectory Line - Key Visual */}
-                 <path 
-                    d="M 120 500 C 250 500, 300 450, 400 300 S 550 150, 680 100" 
-                    fill="none" 
-                    stroke="url(#goldGrad)" 
-                    strokeWidth="4" 
-                    strokeLinecap="round"
-                    strokeDasharray="1000"
-                    strokeDashoffset="1000"
-                    className="animate-draw"
-                    style={{animationDuration: '2.5s', animationDelay: '1.5s', animationTimingFunction: 'ease-in-out'}}
-                 />
-                 
-                 {/* Floating Red Accent Node */}
-                 <circle cx="680" cy="100" r="0" fill="#C8102E" className="animate-[bounce_2s_infinite]" style={{animationName: 'fadeIn, pulse', animationDuration: '0.5s, 2s', animationDelay: '4s, 4.5s', animationFillMode: 'forwards, infinite'}}>
-                    <animate attributeName="r" from="0" to="8" dur="0.5s" begin="3.8s" fill="freeze" calcMode="spline" keySplines="0.25 0.1 0.25 1" />
-                 </circle>
-                 
-                 {/* Decorative Red Line at bottom */}
-                 <rect x="150" y="550" width="0" height="4" fill="#C8102E" className="animate-expand-width" style={{animationDelay: '2.5s', animationDuration: '1s'}} />
-              </svg>
-
-              {/* Floating Stat Card - Minimalist */}
-              <div className="absolute top-1/4 left-0 animate-float" style={{animationDuration: '8s'}}>
-                 <div className="bg-white p-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border-l-4 border-glc-red rounded-r-lg">
-                    <p className="text-glc-gray text-xs font-bold uppercase tracking-wider mb-1">Interest Rates</p>
-                    <div className="flex items-baseline gap-2">
-                       <span className="text-3xl font-bold text-glc-slate">From</span>
-                       <span className="text-3xl font-bold text-glc-gold">5.89%</span>
+              {/* Orbit Track 1 (Inner) */}
+              <div className="absolute w-[400px] h-[400px] border border-dashed border-gray-200 rounded-full animate-orbit-cw">
+                 {/* Satellite 1: Savings (Mini Bar Chart) */}
+                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-orbit-ccw">
+                    <div className="flex flex-col items-center gap-2">
+                       <div className="w-16 h-16 bg-white/80 backdrop-blur-sm rounded-full border border-gray-100 shadow-lg flex items-center justify-center p-3">
+                          <div className="flex items-end gap-1 h-8 w-full justify-center">
+                             <div className="w-2 bg-gray-200 h-4 rounded-t-sm"></div>
+                             <div className="w-2 bg-glc-gold h-6 rounded-t-sm"></div>
+                             <div className="w-2 bg-glc-red h-8 rounded-t-sm"></div>
+                          </div>
+                       </div>
+                       <div className="bg-white px-3 py-1 rounded-full shadow-md border border-gray-50 text-[10px] font-bold text-glc-slate whitespace-nowrap">
+                          Avg Savings $4k+
+                       </div>
                     </div>
+                 </div>
+
+                 {/* Satellite 2: Approval Badge (Pill) */}
+                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 animate-orbit-ccw">
+                     <div className="bg-white px-4 py-2 rounded-full shadow-xl border border-green-100 flex items-center gap-2">
+                        <CheckCircle2 size={16} className="text-green-500" />
+                        <div>
+                           <p className="text-[9px] uppercase font-bold text-gray-400 leading-none">Status</p>
+                           <p className="text-xs font-black text-glc-slate leading-none">Pre-Approved</p>
+                        </div>
+                     </div>
                  </div>
               </div>
 
-              {/* Another Floating Element - Minimalist */}
-              <div className="absolute bottom-1/4 right-0 animate-float" style={{animationDuration: '10s', animationDelay: '1s'}}>
-                 <div className="bg-glc-slate p-6 shadow-2xl rounded-l-lg text-white border-r-4 border-glc-gold">
-                    <div className="flex items-center gap-3 mb-2">
-                       <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                       <p className="text-xs font-bold uppercase tracking-wider text-gray-300">Market Status</p>
-                    </div>
-                    <p className="text-xl font-bold">Optimized</p>
-                 </div>
+              {/* Orbit Track 2 (Outer) */}
+              <div className="absolute w-[600px] h-[600px] border border-gray-100 rounded-full animate-orbit-ccw-fast opacity-60">
+                  {/* Satellite 3: Equity Growth (Circular Progress) */}
+                  <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 animate-orbit-cw-fast">
+                      <div className="relative w-20 h-20 bg-white rounded-full shadow-xl flex items-center justify-center">
+                         <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#f3f4f6" strokeWidth="8" />
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#CCA43B" strokeWidth="8" strokeDasharray="283" strokeDashoffset="70" strokeLinecap="round" />
+                         </svg>
+                         <div className="text-center z-10">
+                            <p className="text-xs font-black text-glc-slate">+12%</p>
+                            <p className="text-[8px] font-bold uppercase text-gray-400">Equity</p>
+                         </div>
+                      </div>
+                  </div>
+
+                  {/* Satellite 4: Market Trend (Floating Icon) */}
+                  <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 animate-orbit-cw-fast">
+                      <div className="w-14 h-14 bg-glc-red text-white rounded-full shadow-lg shadow-red-200 flex items-center justify-center">
+                         <TrendingUp size={24} />
+                      </div>
+                  </div>
               </div>
 
-           </div>
-        </div>
+              {/* Decorative Background Glows */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-glc-gold/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+              
+            </div>
 
+          </div>
+        </FadeIn>
       </div>
     </section>
   );

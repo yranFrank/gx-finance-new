@@ -1,5 +1,6 @@
 import React from 'react';
 import FadeIn from './FadeIn';
+import giannaPhoto from './image/Gianna_xu.jpg';
 
 const Team: React.FC = () => {
   return (
@@ -57,7 +58,7 @@ const Team: React.FC = () => {
              <FadeIn direction="left" delay={300} className="h-full">
                <div className="aspect-[3/4] overflow-hidden rounded-sm shadow-2xl relative group h-full border border-gray-100">
                   <img 
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                    src={giannaPhoto}
                     alt="Gianna - Founder" 
                     className="w-full h-full object-cover transition-transform duration-700 scale-100 group-hover:scale-105 grayscale-[20%] hover:grayscale-0"
                   />

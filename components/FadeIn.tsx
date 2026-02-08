@@ -69,7 +69,7 @@ const FadeIn: React.FC<FadeInProps> = ({
   return (
     <div
       ref={domRef}
-      className={`transition-all duration-1000 ease-out transform ${
+      className={`transition-all duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] transform will-change-transform will-change-opacity ${
         isVisible ? 'opacity-100' : 'opacity-0'
       } ${getTransform()} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}

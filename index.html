@@ -1,66 +1,61 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GX Finance</title>
+    <title>GX Finance | Architectural Lending</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
-              serif: ['Playfair Display', 'serif'],
             },
             colors: {
               glc: {
-                slate: '#0F172A',  // Main Text (Dark Slate)
-                gold: '#CCA43B',   // Premium Gold
-                red: '#C8102E',    // GX Brand Red
-                gray: '#64748B',   // Secondary Text
-                bg: '#FFFFFF',     // Main Background
-                offwhite: '#F8FAFC' // Secondary Background
+                slate: '#0F172A',
+                gold: '#CCA43B',
+                red: '#C8102E',
+                gray: '#64748B',
+                bg: '#FFFFFF',
+                offwhite: '#F9FAFB'
               }
             },
             animation: {
-              'fade-in': 'fadeIn 1s ease-out forwards',
-              'slide-up': 'slideUp 0.8s ease-out forwards',
-              'scroll': 'scroll 40s linear infinite', 
-              'draw': 'draw 2s ease-out forwards',
-              'grow-up': 'growUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-              'expand-width': 'expandWidth 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
               'float': 'float 6s ease-in-out infinite',
+              'float-delayed': 'float 6s ease-in-out 3s infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'scroll': 'scroll 40s linear infinite',
+              'spin-slow': 'spin 30s linear infinite',
+              'spin-reverse-slow': 'spin-reverse 35s linear infinite',
+              'orbit-cw': 'orbit-cw 40s linear infinite',
+              'orbit-ccw': 'orbit-ccw 40s linear infinite',
+              'orbit-cw-fast': 'orbit-cw 25s linear infinite',
+              'orbit-ccw-fast': 'orbit-ccw 25s linear infinite',
             },
             keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0' },
-                '100%': { opacity: '1' },
-              },
-              slideUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-20px)' },
               },
               scroll: {
                 '0%': { transform: 'translateX(0)' },
-                '100%': { transform: 'translateX(-100%)' }, 
+                '100%': { transform: 'translateX(-100%)' },
               },
-              draw: {
-                'to': { strokeDashoffset: '0' }
+              'spin-reverse': {
+                'from': { transform: 'rotate(360deg)' },
+                'to': { transform: 'rotate(0deg)' }
               },
-              growUp: {
-                '0%': { transform: 'scaleY(0)' },
-                '100%': { transform: 'scaleY(1)' }
+              'orbit-cw': {
+                'from': { transform: 'rotate(0deg)' },
+                'to': { transform: 'rotate(360deg)' }
               },
-              expandWidth: {
-                '0%': { width: '0%' },
-                '100%': { width: '100%' }
-              },
-              float: {
-                '0%': { transform: 'translateY(0px)' },
-                '50%': { transform: 'translateY(-10px)' },
-                '100%': { transform: 'translateY(0px)' },
+              'orbit-ccw': {
+                'from': { transform: 'rotate(360deg)' },
+                'to': { transform: 'rotate(0deg)' }
               }
             }
           }
@@ -68,43 +63,26 @@
       }
     </script>
     <style>
+      html {
+        scroll-behavior: smooth;
+      }
       body {
         background-color: #FFFFFF;
         color: #0F172A;
-        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
       }
-      /* Custom scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #F1F1F1;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #C8102E; 
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #CCA43B; 
-      }
-      
-      ::selection {
-        background-color: #F3E5AB;
-        color: #C8102E;
-      }
+      /* Custom thin scrollbar */
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: #f1f1f1; }
+      ::-webkit-scrollbar-thumb { background: #0F172A; }
 
-      .perspective-1000 {
-        perspective: 1000px;
+      .grid-border {
+        border-color: rgba(15, 23, 42, 0.08);
       }
+      .perspective-1200 { perspective: 1200px; }
       
-      /* Pauses animation on both tracks when the parent group is hovered */
-      .group:hover .animate-scroll {
-        animation-play-state: paused;
-      }
-
-      /* Utilities for Line Animations */
-      .origin-bottom { transform-origin: bottom; }
-      .origin-left { transform-origin: left; }
+      /* Smooth transitions for links */
+      a { transition: all 0.3s ease-in-out; }
     </style>
   <script type="importmap">
 {
@@ -118,10 +96,9 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>
